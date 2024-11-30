@@ -1,3 +1,13 @@
+Instructions to Run the Project
+
+************************************
+
+python manage.py runserver
+
+python pcf_client.py
+
+************************************
+
 URLs and Their Functions
 
 ************************************
