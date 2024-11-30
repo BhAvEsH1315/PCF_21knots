@@ -1,0 +1,116 @@
+<!-- pcf_app/templates/message_history.html -->
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Message History</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+
+        .container {
+            width: 80%;
+            margin: 20px auto;
+            background-color: #fff;
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            text-align: center;
+            color: #2c3e50;
+            font-size: 24px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+
+        table, th, td {
+            border: 1px solid #ddd;
+        }
+
+        th, td {
+            padding: 10px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #4CAF50;
+            color: white;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+
+        tr:nth-child(odd) {
+            background-color: #ffffff;
+        }
+
+        .payload {
+            display: none;
+        }
+
+        .payload.visible {
+            display: table-row;
+            background-color: #f0f0f0;
+        }
+
+        .toggle-link {
+            color: #2c3e50;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        .toggle-link:hover {
+            color: #2980b9;
+        }
+    </style>
+    <script>
+        function togglePayload(id) {
+            var element = document.getElementById(id);
+            element.classList.toggle('visible');
+        }
+    </script>
+</head>
+<body>
+    <div class="container">
+        <h1>Message History</h1>
+        <table>
+            <thead>
+                <tr>
+                    <th>Product Name</th>
+                    <th>Timestamp</th>
+                    <th>Details</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for message in messages %}
+                    <tr>
+                        <td>{{ message.product_name }}</td>
+                        <td>{{ message.timestamp }}</td>
+                        <td>
+                            <a href="javascript:void(0)" class="toggle-link" onclick="togglePayload('payload-{{ forloop.counter0 }}')">Show Details</a>
+                        </td>
+                    </tr>
+                    <tr id="payload-{{ forloop.counter0 }}" class="payload">
+                        <td colspan="3">
+                            <p><strong>Product Name:</strong> {{ message.product_name }}</p>
+                            <p><strong>Carbon Footprint:</strong> {{ message.carbon_footprint }}</p>
+                            <p><strong>Reference Start:</strong> {{ message.reference_start }}</p>
+                            <p><strong>Reference Stop:</strong> {{ message.reference_stop }}</p>
+                            <p><strong>Timestamp:</strong> {{ message.timestamp }}</p>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>
