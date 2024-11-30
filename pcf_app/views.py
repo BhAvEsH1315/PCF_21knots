@@ -38,3 +38,36 @@ from .models import Message
 def message_history(request):
     messages = Message.objects.all()
     return render(request, 'message_history.html', {'messages': messages})
+
+# pcf_app/views.py
+from django.shortcuts import render, redirect
+from .forms import MessageForm
+from .models import Message
+import pytz
+
+def message_form_view(request):
+    if request.method == 'POST':
+        form = MessageForm(request.POST)
+        if form.is_valid():
+            product_name = form.cleaned_data['product_name']
+            carbon_footprint = form.cleaned_data['carbon_footprint']
+            reference_start = form.cleaned_data['reference_start']
+            reference_stop = form.cleaned_data['reference_stop']
+
+            # Adjust the timestamps to the local timezone
+            timezone = pytz.timezone('Asia/Kolkata')
+            reference_start = reference_start.astimezone(timezone)
+            reference_stop = reference_stop.astimezone(timezone)
+
+            # Save the data to the database
+            Message.objects.create(
+                product_name=product_name,
+                carbon_footprint=carbon_footprint,
+                reference_start=reference_start,
+                reference_stop=reference_stop
+            )
+            return redirect('message-form')  # Redirect to the same form page or another page
+    else:
+        form = MessageForm()
+
+    return render(request, 'message_form.html', {'form': form})
